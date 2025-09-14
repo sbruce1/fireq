@@ -1,0 +1,6 @@
+CompileFlags:
+  Add: 
+    - -I/home/samuel/Code/projects/ArrayFire/arrayfire/ArrayFire-3.9.0-Linux/include
+    - -L/home/samuel/Code/projects/ArrayFire/arrayfire/ArrayFire-3.9.0-Linux/lib64
+    - -laf
+
