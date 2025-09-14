@@ -28,13 +28,13 @@ K mmuc(K x, K y, K dxr, K dxc, K dyr, K dyc){
 	J num_elements = d0 * d1;
 	K h_C = ktn(KF, num_elements);
 	af_get_data_ptr(kF(h_C), d_C);
-	K mat = ktn(0, cols);
-	for (J c = 0; c < cols; c++) {
-		K col = ktn(KF, rows);
-		for (J r = 0; r < rows; r++) {
-		    kF(col)[r] = kF(h_C)[c*rows + r];
-		}
-		kK(mat)[c] = col;
+	K mat = ktn(0, rows);
+	for (J r = 0; r < rows; r++) {
+	    K row = ktn(KF, cols);
+	    for (J c = 0; c < cols; c++) {
+		kF(row)[c] = kF(h_C)[c*rows + r];  // column-major index
+	    }
+	    kK(mat)[r] = row;
 	}
 	r0(h_C);
 	af_release_array(d_A);
