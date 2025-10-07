@@ -2,7 +2,6 @@
 
 a:1000 1000#1000000?1f;
 b:1000 1000#"f"$til 1000000;
-\ts:10 a mmu b
 \ts:10 mmu[;b] peach a
 \ts:10 .af.mmu[a;b]
 
