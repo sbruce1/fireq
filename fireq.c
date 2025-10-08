@@ -1,17 +1,51 @@
 #include <arrayfire.h>
 #include "k.h"
+#include <stdio.h>
+
+af_array K_to_array(K x){
+	af_array r = 0;
+	P(xt!=KI && xt!=KJ && xt!=KE && xt!=KF,krr("type"));
+	dim_t dims[1] = {xn};
+	const V *data = NULL;
+	af_dtype t;
+	switch(xt){
+		case KI:t=s32;data=kI(x);break;
+		case KJ:t=s64;data=kJ(x);break;
+		case KE:t=f32;data=kE(x);break;
+		case KF:t=f64;data=kF(x);break;
+		default:
+			R r;
+	}
+	af_create_array(&r, data, 1, dims, t);
+	R r;
+}
+
+K array_to_K(af_array a){
+	af_dtype t;
+	af_get_type(&t, a);
+	dim_t d0, d1, d2, d3;
+	af_get_dims(&d0, &d1, &d2, &d3, a);
+	J kt;
+	K r;
+	V *data = NULL;
+	switch (t) {
+		case s32:kt=KI;r=ktn(kt,d0);data=kI(r);break;
+		case s64:kt=KJ;r=ktn(kt,d0);data=kJ(r);break;
+		case f32:kt=KE;r=ktn(kt,d0);data=kE(r);break;
+		case f64:kt=KF;r=ktn(kt,d0);data=kF(r);break;
+		default: 
+			R (K)0;
+	}	
+	af_get_data_ptr(data, a);
+	R r;
+}
 
 K1(sum){
-	P(xt!=KF,krr("type"));
-	af_array d_arr = 0, d_sum = 0;
-	dim_t dims[1] = {xn};
-	af_create_array(&d_arr, kF(x), 1, dims, f64);
-	af_sum(&d_sum, d_arr, 0);
-	F sum = 0.0;
-	af_get_scalar(&sum, d_sum);
-	af_release_array(d_sum);
-	af_release_array(d_arr);
-	R kf(sum);
+	af_array a = K_to_array(x);
+	P(!a, krr("type"));
+	af_array s = 0;
+	af_sum(&s, a, 0);
+	R array_to_K(s);
 }
 
 K mmuc(K x, K y, K dxr, K dxc, K dyr, K dyc){
@@ -47,7 +81,7 @@ K init() {
 	K n=ktn(KS, 0);
 	K f=ktn(0,0);
 	#define _(s,a) js(&n,ss(#s));jk(&f,dl((V*)s,a));
-	_(sum,1)_(mmuc,6)
+	_(sum,1)_(mmuc,6)_(sum2,1)
 	af_info(); // Initializes and prints info
 	R xD(n,f);
 }
