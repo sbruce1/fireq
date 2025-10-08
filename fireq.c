@@ -40,6 +40,17 @@ K array_to_K(af_array a){
 	R r;
 }
 
+K1(sum){
+	af_array a = K_to_array(x);
+	P(!a, krr("type"));
+	af_array s = 0;
+	af_sum(&s, a, 0);
+	K r = array_to_K(s);
+	af_release_array(a);
+	af_release_array(s);
+	R r;
+}
+
 af_array K_to_matrix(K x){
 	af_array r = 0;
 	P(xt!=0,r);
@@ -82,16 +93,6 @@ K matrix_to_K(af_array a){
 }
 
 
-K1(sum){
-	af_array a = K_to_array(x);
-	P(!a, krr("type"));
-	af_array s = 0;
-	af_sum(&s, a, 0);
-	K r = array_to_K(s);
-	af_release_array(a);
-	af_release_array(s);
-	R r;
-}
 
 K1(noop){
 	af_array a = K_to_matrix(x);
