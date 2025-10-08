@@ -87,12 +87,30 @@ K1(sum){
 	P(!a, krr("type"));
 	af_array s = 0;
 	af_sum(&s, a, 0);
-	R array_to_K(s);
+	K r = array_to_K(s);
+	af_release_array(a);
+	af_release_array(s);
+	R r;
 }
 
 K1(noop){
 	af_array a = K_to_matrix(x);
-	R matrix_to_K(a);
+	K r = matrix_to_K(a);
+	af_release_array(a);
+	R r;
+}
+
+K2(mmu2){
+	af_array a = K_to_matrix(x);
+	af_array b = K_to_matrix(y);
+	af_array c = 0;
+
+	af_matmul(&c, a, b, AF_MAT_NONE, AF_MAT_NONE);
+	K r = matrix_to_K(c);
+
+	af_release_array(a);
+	af_release_array(b);
+	R r;
 }
 
 K mmuc(K x, K y, K dxr, K dxc, K dyr, K dyc){
@@ -128,7 +146,7 @@ K init() {
 	K n=ktn(KS, 0);
 	K f=ktn(0,0);
 	#define _(s,a) js(&n,ss(#s));jk(&f,dl((V*)s,a));
-	_(sum,1)_(mmuc,6)_(noop,1)
+	_(sum,1)_(mmuc,6)_(noop,1)_(mmu2,2)
 	af_info(); // Initializes and prints info
 	R xD(n,f);
 }
