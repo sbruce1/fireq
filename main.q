@@ -11,6 +11,6 @@ a mmu b
 // \ts d:.af.mmu2[a;b]
 // 0N!c;
 // 0N!d;
-// a:4 4#16?1f;
-// b:.af.noop a;
-// a~b
+a:4 4#16?1f;
+b:.af.noop a;
+a~b

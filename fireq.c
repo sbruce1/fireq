@@ -68,10 +68,12 @@ af_array K_to_matrix(K x){
 			R r;
 	}
 	af_create_array(&r, data, 2, dims, t);
+	// af_transpose_inplace(r, false);
 	R r;
 }
 
 K matrix_to_K(af_array a){
+	// af_transpose_inplace(a, false);
 	af_dtype t;
 	af_get_type(&t, a);
 	dim_t d0, d1, d2, d3;
@@ -91,8 +93,6 @@ K matrix_to_K(af_array a){
 	K r = k(0, "{x cut y}", kj(d1), r1(y), (K)0);
 	R r;
 }
-
-
 
 K1(noop){
 	af_array a = K_to_matrix(x);
