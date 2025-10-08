@@ -4,7 +4,7 @@
 
 af_array K_to_array(K x){
 	af_array r = 0;
-	P(xt!=KI && xt!=KJ && xt!=KE && xt!=KF,krr("type"));
+	P(xt!=KI && xt!=KJ && xt!=KE && xt!=KF,r);
 	dim_t dims[1] = {xn};
 	const V *data = NULL;
 	af_dtype t;
@@ -40,12 +40,59 @@ K array_to_K(af_array a){
 	R r;
 }
 
+af_array K_to_matrix(K x){
+	af_array r = 0;
+	P(xt!=0,r);
+	P(xx->t!=KI && xx->t!=KJ && xx->t!=KE && xx->t!=KF,r);
+	dim_t dims[2] = {xn, xx->j};
+	const V *data = NULL;
+	af_dtype t;
+	K y;
+	switch(xx->t){
+		case KI:t=s32;y=ktn(KI,0);DO(xn,jv(&y,kK(x)[i]));data=kI(y);break;
+		case KJ:t=s64;y=ktn(KJ,0);DO(xn,jv(&y,kK(x)[i]));data=kJ(y);break;
+		case KE:t=f32;y=ktn(KE,0);DO(xn,jv(&y,kK(x)[i]));data=kE(y);break;
+		case KF:t=f64;y=ktn(KF,0);DO(xn,jv(&y,kK(x)[i]));data=kF(y);break;
+		default:
+			R r;
+	}
+	af_create_array(&r, data, 2, dims, t);
+	R r;
+}
+
+K matrix_to_K(af_array a){
+	af_dtype t;
+	af_get_type(&t, a);
+	dim_t d0, d1, d2, d3;
+	af_get_dims(&d0, &d1, &d2, &d3, a);
+	J kt;
+	V *data = NULL;
+	K y;
+	switch (t) {
+		case s32:kt=KI;y=ktn(kt,d0*d1);data=kI(y);break;
+		case s64:kt=KJ;y=ktn(kt,d0*d1);data=kJ(y);break;
+		case f32:kt=KE;y=ktn(kt,d0*d1);data=kE(y);break;
+		case f64:kt=KF;y=ktn(kt,d0*d1);data=kF(y);break;
+		default: 
+			R (K)0;
+	}	
+	af_get_data_ptr(data, a);
+	K r = k(0, "{x cut y}", kj(d1), r1(y), (K)0);
+	R r;
+}
+
+
 K1(sum){
 	af_array a = K_to_array(x);
 	P(!a, krr("type"));
 	af_array s = 0;
 	af_sum(&s, a, 0);
 	R array_to_K(s);
+}
+
+K1(noop){
+	af_array a = K_to_matrix(x);
+	R matrix_to_K(a);
 }
 
 K mmuc(K x, K y, K dxr, K dxc, K dyr, K dyc){
@@ -81,7 +128,7 @@ K init() {
 	K n=ktn(KS, 0);
 	K f=ktn(0,0);
 	#define _(s,a) js(&n,ss(#s));jk(&f,dl((V*)s,a));
-	_(sum,1)_(mmuc,6)_(sum2,1)
+	_(sum,1)_(mmuc,6)_(noop,1)
 	af_info(); // Initializes and prints info
 	R xD(n,f);
 }

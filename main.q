@@ -1,3 +1,5 @@
 \l fireq.q
 
-0N!.af.sum2[til 1000]
+a:4 4#16?1f;
+b:.af.noop a;
+a~b
