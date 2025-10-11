@@ -102,20 +102,23 @@ K1(k##NAME){\
 	af_release_array(a); \
 	af_release_array(s); \
 	R r;};
+
+#define F1D(NAME) \
+K1(k##NAME){\
+	af_array a = K_to_array(x); \
+	P(!a, krr("type")); \
+	af_array s = 0; \
+	af_##NAME(&s, a, 0); \
+	K r = array_to_K(s); \
+	af_release_array(a); \
+	af_release_array(s); \
+	R r;};
 	
 F1(abs)
+F1D(accum)
 F1(acos)
+F1D(sum)
 
-K1(ksum){
-	af_array a = K_to_array(x);
-	P(!a, krr("type"));
-	af_array s = 0;
-	af_sum(&s, a, 0);
-	K r = array_to_K(s);
-	af_release_array(a);
-	af_release_array(s);
-	R r;
-}
 
 K2(kmmu){
 	af_array a = K_to_matrix(x);
@@ -136,7 +139,7 @@ K init() {
 	K n=ktn(KS, 0);
 	K f=ktn(0,0);
 	#define _(s,a) js(&n,ss(#s));jk(&f,dl((V*)s,a));
-	_(kabs, 1)_(kacos, 1)_(ksum,1)_(kmmu,2)
+	_(kabs, 1)_(kaccum, 1)_(kacos, 1)_(ksum,1)_(kmmu,2)
 	af_info(); // Initializes and prints info
 	R xD(n,f);
 }
