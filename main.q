@@ -1,8 +1,5 @@
 \l fireq.q
 
-a:neg[1]+1000000?2e;
-a:1000000?1f;
-
 // Abs
 // \ts b:abs a;
 // \ts c:.af.abs a;
@@ -19,7 +16,12 @@ a:1000000?1f;
 // b~c // just handling of nulls
 
 // Asc
-// \ts:10 b:asc a;
-// \ts:10 c:.af.asc a;
+// \ts:10 b:dev a;
+// \ts:10 c:.af.dev a;
 // b~c
+
+// Solve
+a:(3 1;1 2);
+b:enlist 9 8;
+.af.solve[a;b]
 

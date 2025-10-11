@@ -30,11 +30,8 @@ ArrayFire is a GPU library that operates on Arrays, seems to be perfect for GPU 
 |  pow                        | Raise a base to a power (or exponent)                                                                     | xexp                  |
 |  pow2                       | Raise 2 to a power (or exponent)                                                                          | 2 xexp                |
 |  product                    | Multiply array elements over a given dimension                                                            | */                    |
-|  rotate                     | Rotate an input image or array                                                                            | rotate                |
 |  setintersect               | Evaluate the intersection of two arrays                                                                   | inter                 |
 |  setunion                   | Evaluate the union of two arrays                                                                          | union                 |
-|  setunique                  | Return the unique values in an array                                                                      | distinct              |
-|  shift                      | Shift an array                                                                                            | xrotate               |
 |  sin                        | Evaluate the sine function                                                                                | sin                   |
 |  solve                      | Solve a system of equations                                                                               | lsq                   |
 |  solveLU                    | Solve a system of equations                                                                               | lsq                   |

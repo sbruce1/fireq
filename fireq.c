@@ -139,9 +139,9 @@ F1(min, 0)
 F1(product,0)
 // setintersect
 // setunion
-F1R(set_unique, kdistinct, 0) // can also add a flag if sorted
 F1(sin)
 // solve
+
 // solveLu
 F1R(sort, kdesc, 0, 0);
 F1R(sort, kasc, 0, 1);
@@ -152,9 +152,27 @@ F1R(stdev_v2, kdev, 0, 0)
 F1(sum, 0)
 F1(tan)
 
+K2(ksolve){
+	af_array a = K_to_matrix(x);
+	P(!a, krr("type"));
+	af_array b = K_to_matrix(y);
+	P(!b, krr("type"));
+	af_array c = 0;
+
+	af_solve(&c, a, b, AF_MAT_NONE);
+	K r = matrix_to_K(c);
+
+	af_release_array(a);
+	af_release_array(b);
+	af_release_array(c);
+	R r;
+ }
+
 K2(kmmu){
 	af_array a = K_to_matrix(x);
+	P(!a, krr("type"));
 	af_array b = K_to_matrix(y);
+	P(!b, krr("type"));
 	af_array c = 0;
 
 	af_matmul(&c, a, b, AF_MAT_NONE, AF_MAT_NONE);
@@ -186,7 +204,6 @@ K init() {
 	_(kmedian, 1)
 	_(kmin, 1)
 	_(kproduct, 1)
-	_(kdistinct, 1)
 	_(ksin, 1)
 	_(kdesc, 1)
 	_(kasc, 1)
@@ -194,6 +211,7 @@ K init() {
 	_(kdev, 1)
 	_(ksum,1)
 	_(ktan, 1)
+	_(ksolve, 2)
 	_(kmmu,2)
 	af_info(); // Initializes and prints info
 	R xD(n,f);
