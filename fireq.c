@@ -103,6 +103,18 @@ K1(k##NAME){\
     R r;\
 };
 
+#define F1R(NAME, NAME2, ...) \
+K1(NAME2){\
+    af_array a = K_to_array(x); \
+    P(!a, krr("type")); \
+    af_array s = 0; \
+    af_##NAME(&s, a __VA_OPT__(, __VA_ARGS__)); \
+    K r = array_to_K(s); \
+    af_release_array(a); \
+    af_release_array(s); \
+    R r;\
+};
+
 F1(abs)
 F1(accum, 0)
 F1(acos)
@@ -110,11 +122,19 @@ F1(acos)
 // approx2
 F1(asin)
 F1(atan)
-F1(ceil)
 F1(cos)
 // cov
-F1(diff1, 0)
-F1(diff2, 0)
+F1(exp)
+F1(log)
+F1(log10)
+F1(log2)
+
+
+
+F1R(sort, kdesc, 0, 0);
+F1R(sort, kasc, 0, 1);
+// F1R(sort_index, xdesc, 0, 0) // later 
+// F1R(sort_index, xdesc, 0, 0)
 
 
 F1(sum, 0)
@@ -143,10 +163,13 @@ K init() {
 	_(kacos, 1)
 	_(kasin, 1)
 	_(katan, 1)
-	_(kceil, 1)
 	_(kcos, 1)
-	_(kdiff1, 1)
-	_(kdiff2, 1)
+	_(kexp, 1)
+	_(klog, 1)
+	_(klog10, 1)
+	_(klog2, 1)
+	_(kasc, 1)
+	_(kdesc, 1)
 	_(ksum,1)
 	_(kmmu,2)
 	af_info(); // Initializes and prints info

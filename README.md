@@ -13,24 +13,12 @@ ArrayFire is a GPU library that operates on Arrays, seems to be perfect for GPU 
 |  approx2                    | Interpolation along two dimensions                                                                        | lsq-ish               |
 |  asin                       | Evaluate the inverse sine function (arc sine)                                                             | asin                  |
 |  atan                       | Evaluate the inverse tangent function (arc tangent)                                                       | atan                  |
-|  ceil                       | Rounds up to the least integer greater than or equal to x                                                 | ceiling               |
 |  cos                        | Evaluate the cosine function                                                                              | cos                   |
 |  cov                        | Find the covariance of values in the input                                                                | cov                   |
-|  diff1                      | Calculate the first order difference in an array over a given dimension                                   | diff (?)              |
-|  diff2                      | Calculate the second order difference in an array over a given dimension                                  | diff (?)              |
-|  div                        | Elementwise division                                                                                      | div                   |
-|  eq                         | Equal to, an elementwise comparison of two arrays                                                         | =                     |
 |  exp                        | Evaluate the exponential function                                                                         | exp                   |
-|  flat                       | Flatten an array                                                                                          | raze (docs says noop) |
-|  flip                       | Flip the input along a specified dimension                                                                | flip                  |
-|  floor                      | Rounds down to the greatest integer less than or equal to x                                               | floor                 |
-|  ge                         | Greater than or equal to, an elementwise comparison of two arrays                                         | >=                    |
-|  iota                       | Generate an array with [0, n-1] values modified to specified dimensions and tiling                        | til                   |
-|  join                       | Join up to 4 arrays along specified dimension                                                             | ,                     |
 |  log                        | Evaluate the natural logarithm                                                                            | log                   |
 |  log10                      | Evaluate the base 10 logarithm                                                                            | 10 xlog               |
 |  log2                       | Evaluate the base 2 logarithm                                                                             | 2 xlog                |
-|  lookup                     | Lookup values of an array by indexing with another array                                                  | @                     |
 |  lu                         | Perform LU decomposition                                                                                  | inv (inv uses this)   |
 |  matmul                     | Matrix multiplication                                                                                     | mmu                   |
 |  max                        | Return the maximum along a given dimension                                                                | max                   |
@@ -63,6 +51,3 @@ ArrayFire is a GPU library that operates on Arrays, seems to be perfect for GPU 
 |  topk                       | This function returns the top k values along a given dimension of the input array                         | ai-libs topk          |
 |  var                        | Find the variance of values in the input                                                                  | var                   |
 |  where                      | Locate the indices of the non-zero values in an array                                                     | where                 |
-
-
-## List of Q Functions
