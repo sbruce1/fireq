@@ -55,7 +55,6 @@ af_array K_to_matrix(K x){
 	af_array r = 0;
 	P(xt!=0,r);
 	P(xx->t!=KI && xx->t!=KJ && xx->t!=KE && xx->t!=KF,r);
-	// dim_t dims[2] = {xn, xx->j};
 	dim_t dims[2] = {xx->j, xn};
 	const V *data = NULL;
 	af_dtype t;
@@ -69,9 +68,10 @@ af_array K_to_matrix(K x){
 			R r;
 	}
 	af_create_array(&r, data, 2, dims, t);
-	printf("K_to_matrix");
-	af_print_array(r);
-	R r;
+	af_array r2 = 0;
+	af_transpose(&r2, r, false);
+	af_release_array(r);
+	R r2;
 }
 
 K matrix_to_K(af_array a){
@@ -80,6 +80,8 @@ K matrix_to_K(af_array a){
 	dim_t d0, d1, d2, d3;
 	af_get_dims(&d0, &d1, &d2, &d3, a);
 	J kt;
+	af_array b = 0;
+	af_transpose(&b, a, false);
 	V *data = NULL;
 	K y;
 	switch (t) {
@@ -90,10 +92,8 @@ K matrix_to_K(af_array a){
 		default: 
 			R (K)0;
 	}	
-	af_get_data_ptr(data, a);
+	af_get_data_ptr(data, b);
 	K r = k(0, "{x cut y}", kj(d1), r1(y), (K)0);
-	printf("matrix_to_K");
-	k(0, "{0N!x}", r1(r), (K)0);
 	R r;
 }
 
@@ -110,12 +110,11 @@ K2(mmu2){
 	af_array c = 0;
 
 	af_matmul(&c, a, b, AF_MAT_NONE, AF_MAT_NONE);
-	printf("mmu2");
-	af_print_array(c);
 	K r = matrix_to_K(c);
 
 	af_release_array(a);
 	af_release_array(b);
+	af_release_array(c);
 	R r;
 }
 
