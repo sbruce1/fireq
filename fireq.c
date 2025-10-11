@@ -91,7 +91,6 @@ K matrix_to_K(af_array a){
 }
 
 // Functions
-
 #define F1(NAME, ...) \
 K1(k##NAME){\
     af_array a = K_to_array(x); \
@@ -104,15 +103,21 @@ K1(k##NAME){\
     R r;\
 };
 
-
-
 F1(abs)
 F1(accum, 0)
 F1(acos)
-F1(sum, 0)
+// approx1
+// approx2
 F1(asin)
+F1(atan)
+F1(ceil)
+F1(cos)
+// cov
+F1(diff1, 0)
+F1(diff2, 0)
 
 
+F1(sum, 0)
 
 K2(kmmu){
 	af_array a = K_to_matrix(x);
@@ -133,7 +138,17 @@ K init() {
 	K n=ktn(KS, 0);
 	K f=ktn(0,0);
 	#define _(s,a) js(&n,ss(#s));jk(&f,dl((V*)s,a));
-	_(kabs, 1)_(kaccum, 1)_(kacos, 1)_(ksum,1)_(kmmu,2)
+	_(kabs, 1)
+	_(kaccum, 1)
+	_(kacos, 1)
+	_(kasin, 1)
+	_(katan, 1)
+	_(kceil, 1)
+	_(kcos, 1)
+	_(kdiff1, 1)
+	_(kdiff2, 1)
+	_(ksum,1)
+	_(kmmu,2)
 	af_info(); // Initializes and prints info
 	R xD(n,f);
 }

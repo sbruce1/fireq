@@ -9,16 +9,11 @@ ArrayFire is a GPU library that operates on Arrays, seems to be perfect for GPU 
 |  abs                        | Calculate the absolute value                                                                              | abs                   |
 |  accum                      | Evaluate the cumulative sum (inclusive) along a given dimension                                           | sums                  |
 |  acos                       | Evaluate the inverse cosine function (arc cosine)                                                         | acos                  |
-|  add                        | Elementwise addition                                                                                      | +                     |
-|  allTrue                    | Check if all values along a given dimension are true                                                      | all                   |
-|  and                        | Evaluate the logical AND of two arrays                                                                    | and                   |
 |  approx1                    | Interpolation across a single dimension                                                                   | lsq-ish               |
 |  approx2                    | Interpolation along two dimensions                                                                        | lsq-ish               |
 |  asin                       | Evaluate the inverse sine function (arc sine)                                                             | asin                  |
-|  atan/atan2                 | Evaluate the inverse tangent function (arc tangent)                                                       | atan                  |
-|  cast                       | Cast an array from one type to another                                                                    | $                     |
+|  atan                       | Evaluate the inverse tangent function (arc tangent)                                                       | atan                  |
 |  ceil                       | Rounds up to the least integer greater than or equal to x                                                 | ceiling               |
-|  constant                   | Create an array from a scalar input value                                                                 | #                     |
 |  cos                        | Evaluate the cosine function                                                                              | cos                   |
 |  cov                        | Find the covariance of values in the input                                                                | cov                   |
 |  diff1                      | Calculate the first order difference in an array over a given dimension                                   | diff (?)              |
