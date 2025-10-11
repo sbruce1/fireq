@@ -6,7 +6,7 @@
 // abs - af_abs
 // List of .q namespace
 // mmu - af_matmul
-.af.mmu:{[x;y] .af.mmuc[raze flip x;raze flip y;count x;count first x;count y;count first y]} // todo: fix this
+.af.mmu;
 // lsq
 // inv
 // md5

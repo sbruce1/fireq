@@ -104,7 +104,7 @@ K1(noop){
 	R r;
 }
 
-K2(mmu2){
+K2(mmu){
 	af_array a = K_to_matrix(x);
 	af_array b = K_to_matrix(y);
 	af_array c = 0;
@@ -116,42 +116,14 @@ K2(mmu2){
 	af_release_array(b);
 	af_release_array(c);
 	R r;
-}
+ }
 
-K mmuc(K x, K y, K dxr, K dxc, K dyr, K dyc){
-	P(xt!=KF||y->t!=KF||dxr->t!=-KJ||dxc->t!=-KJ||dyr->t!=-KJ||dyc->t!=-KJ,krr("type"));
-	dim_t dimsx[2] = {dxr->j, dxc->j};
-	dim_t dimsy[2] = {dyr->j, dyc->j};
-	af_array d_A = 0, d_B = 0, d_C = 0;
-	af_create_array(&d_A, kF(x), 2, dimsx, f64);
-	af_create_array(&d_B, kF(y), 2, dimsy, f64);
-	af_matmul(&d_C, d_A, d_B, AF_MAT_NONE, AF_MAT_NONE);
-	dim_t d0, d1, d2, d3;
-	af_get_dims(&d0, &d1, &d2, &d3, d_C);
-	J rows = d0, cols = d1;
-	J num_elements = d0 * d1;
-	K h_C = ktn(KF, num_elements);
-	af_get_data_ptr(kF(h_C), d_C);
-	K mat = ktn(0, rows);
-	for (J r = 0; r < rows; r++) {
-	    K row = ktn(KF, cols);
-	    for (J c = 0; c < cols; c++) {
-		kF(row)[c] = kF(h_C)[c*rows + r];  // column-major index
-	    }
-	    kK(mat)[r] = row;
-	}
-	r0(h_C);
-	af_release_array(d_A);
-	af_release_array(d_B);
-	af_release_array(d_C);
-	R mat;
-}
 
 K init() {
 	K n=ktn(KS, 0);
 	K f=ktn(0,0);
 	#define _(s,a) js(&n,ss(#s));jk(&f,dl((V*)s,a));
-	_(sum,1)_(mmuc,6)_(noop,1)_(mmu2,2)
+	_(sum,1)_(noop,1)_(mmu,2)
 	af_info(); // Initializes and prints info
 	R xD(n,f);
 }
