@@ -27,14 +27,10 @@ ArrayFire is a GPU library that operates on Arrays, seems to be perfect for GPU 
 |  min                        | Return the minimum along a given dimension                                                                | min                   |
 |  mod                        | Calculate the modulus                                                                                     | mod                   |
 |  nearestNeighbour           | Determine the nearest neighbouring points to a given set of points                                        | ai-libs flat          |
-|  neg                        | Negate an array                                                                                           | neg                   |
-|  not                        | Evaluate the logical NOT of an array                                                                      | not                   |
-|  or                         | Evaluate the logical OR of two arrays                                                                     | or                    |
 |  pow                        | Raise a base to a power (or exponent)                                                                     | xexp                  |
 |  pow2                       | Raise 2 to a power (or exponent)                                                                          | 2 xexp                |
 |  product                    | Multiply array elements over a given dimension                                                            | */                    |
 |  rotate                     | Rotate an input image or array                                                                            | rotate                |
-|  select                     | Select elements based on a conditional array                                                              | select                |
 |  setintersect               | Evaluate the intersection of two arrays                                                                   | inter                 |
 |  setunion                   | Evaluate the union of two arrays                                                                          | union                 |
 |  setunique                  | Return the unique values in an array                                                                      | distinct              |

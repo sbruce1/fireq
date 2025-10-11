@@ -1,6 +1,7 @@
 \l fireq.q
 
-a:neg[1]+10000000?2e;
+a:neg[1]+1000000?2e;
+a:1000000?1f;
 
 // Abs
 // \ts b:abs a;
@@ -18,7 +19,7 @@ a:neg[1]+10000000?2e;
 // b~c // just handling of nulls
 
 // Asc
-\ts:10 b:asc a;
-\ts:10 c:.af.asc a;
-b~c
+// \ts:10 b:asc a;
+// \ts:10 c:.af.asc a;
+// b~c
 

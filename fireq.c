@@ -43,7 +43,6 @@ K array_to_K(af_array a){
 }
 
 // 2D Matrix
-
 af_array K_to_matrix(K x){
 	af_array r = 0;
 	P(xt!=0,r);
@@ -128,16 +127,30 @@ F1(exp)
 F1(log)
 F1(log10)
 F1(log2)
-
-
-
+// lu
+F1(max, 0)
+F1(mean, 0)
+F1(median, 0)
+F1(min, 0)
+// mod
+// nearestNeighbour
+// pow
+// pow2
+F1(product,0)
+// setintersect
+// setunion
+F1R(set_unique, kdistinct, 0) // can also add a flag if sorted
+F1(sin)
+// solve
+// solveLu
 F1R(sort, kdesc, 0, 0);
 F1R(sort, kasc, 0, 1);
 // F1R(sort_index, xdesc, 0, 0) // later 
 // F1R(sort_index, xdesc, 0, 0)
-
-
+F1(sqrt)
+F1R(stdev_v2, kdev, 0, 0)
 F1(sum, 0)
+F1(tan)
 
 K2(kmmu){
 	af_array a = K_to_matrix(x);
@@ -168,9 +181,19 @@ K init() {
 	_(klog, 1)
 	_(klog10, 1)
 	_(klog2, 1)
-	_(kasc, 1)
+	_(kmax, 1)
+	_(kmean, 1)
+	_(kmedian, 1)
+	_(kmin, 1)
+	_(kproduct, 1)
+	_(kdistinct, 1)
+	_(ksin, 1)
 	_(kdesc, 1)
+	_(kasc, 1)
+	_(ksqrt, 1)
+	_(kdev, 1)
 	_(ksum,1)
+	_(ktan, 1)
 	_(kmmu,2)
 	af_info(); // Initializes and prints info
 	R xD(n,f);
