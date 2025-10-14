@@ -3,7 +3,6 @@
 #include <stdio.h>
 
 // 1D Arrays
-
 af_array K_to_array(K x){
 	af_array r = 0;
 	P(xt!=KI && xt!=KJ && xt!=KE && xt!=KF,r);
@@ -90,6 +89,12 @@ K matrix_to_K(af_array a){
 	R r;
 }
 
+// Export variables
+ZK s=NULL;
+ZK f=NULL;
+
+V reg(S n, V* fn, I a){if(!s){s=ktn(KS, 0);}if(!f){f=ktn(0, 0);}js(&s, ss(n));jk(&f, dl(fn,a));}
+
 // Functions
 #define F1R(NAME, NAME2, ...) \
 K1(NAME2){\
@@ -101,109 +106,73 @@ K1(NAME2){\
     af_release_array(a); \
     af_release_array(s); \
     R r;\
-};
+} \
+__attribute__((constructor)) Z V r_##NAME2(V){ reg(#NAME2, (V*)NAME2, 1);}
 
 #define F1(NAME, ...) F1R(NAME, k##NAME __VA_OPT__(, __VA_ARGS__))
 
-F1(abs)
-F1(accum, 0)
-F1(acos)
+#define M1R(NAME, NAME2, ...) \
+K1(NAME2){\
+	af_array a = K_to_matrix(x);\
+	P(!a, krr("type"));\
+	af_array b = 0;\
+	af_err err = af_##NAME(&b, a __VA_OPT__(, __VA_ARGS__));\
+	P(err, krr("af error"));\
+	K r = matrix_to_K(b);\
+	af_release_array(a);\
+	af_release_array(b);\
+	R r;\
+}\
+__attribute__((constructor)) Z V r_##NAME2(V){ reg(#NAME2, (V*)NAME2, 1);}
+
+#define M1(NAME, ...) M1R(NAME, k##NAME __VA_OPT__(, __VA_ARGS__))
+
+#define M2R(NAME, NAME2, ...) \
+K2(NAME2){\
+	af_array a = K_to_matrix(x);\
+	P(!a, krr("type"));\
+	af_print_array(a);\
+	af_array b = K_to_matrix(y);\
+	P(!b, krr("type"));\
+	af_print_array(b);\
+	af_array c = 0;\
+	af_err err = af_##NAME(&c, a, b __VA_OPT__(, __VA_ARGS__));\
+	P(err, krr("af error"));\
+	K r = matrix_to_K(c);\
+	af_release_array(a);\
+	af_release_array(b);\
+	af_release_array(c);\
+	R r;\
+}\
+__attribute__((constructor)) Z V r_##NAME2(V){ reg(#NAME2, (V*)NAME2, 2);}
+	
+#define M2(NAME, ...) M2R(NAME, k##NAME __VA_OPT__(, __VA_ARGS__))
+
+
+F1(abs)F1(accum, 0)F1(acos)F1(asin)F1(atan)F1(cos)F1(exp)F1(log)F1(log10)F1(log2)F1(max, 0)F1(mean, 0)F1(median, 0)F1(min, 0)
+F1(product,0)F1(sin)F1R(sort, kdesc, 0, 0);F1R(sort, kasc, 0, 1);F1(sqrt)F1R(stdev_v2, kdev, 0, 0)F1(sum, 0)F1(tan)
+M2(solve, AF_MAT_NONE)
+M2R(matmul, kmmu, AF_MAT_NONE, AF_MAT_NONE)
+M1R(inverse, kinv, AF_MAT_NONE)
 // approx1
 // approx2
-F1(asin)
-F1(atan)
-F1(cos)
 // cov
-F1(exp)
-F1(log)
-F1(log10)
-F1(log2)
 // lu
-F1(max, 0)
-F1(mean, 0)
-F1(median, 0)
-F1(min, 0)
 // mod
 // nearestNeighbour
 // pow
 // pow2
-F1(product,0)
 // setintersect
 // setunion
-F1(sin)
 // solve
 
 // solveLu
-F1R(sort, kdesc, 0, 0);
-F1R(sort, kasc, 0, 1);
 // F1R(sort_index, xdesc, 0, 0) // later 
 // F1R(sort_index, xdesc, 0, 0)
-F1(sqrt)
-F1R(stdev_v2, kdev, 0, 0)
-F1(sum, 0)
-F1(tan)
-
-K2(ksolve){
-	af_array a = K_to_matrix(x);
-	P(!a, krr("type"));
-	af_array b = K_to_matrix(y);
-	P(!b, krr("type"));
-	af_array c = 0;
-
-	af_solve(&c, a, b, AF_MAT_NONE);
-	K r = matrix_to_K(c);
-
-	af_release_array(a);
-	af_release_array(b);
-	af_release_array(c);
-	R r;
- }
-
-K2(kmmu){
-	af_array a = K_to_matrix(x);
-	P(!a, krr("type"));
-	af_array b = K_to_matrix(y);
-	P(!b, krr("type"));
-	af_array c = 0;
-
-	af_matmul(&c, a, b, AF_MAT_NONE, AF_MAT_NONE);
-	K r = matrix_to_K(c);
-
-	af_release_array(a);
-	af_release_array(b);
-	af_release_array(c);
-	R r;
- }
 
 
 K init() {
-	K n=ktn(KS, 0);
-	K f=ktn(0,0);
-	#define _(s,a) js(&n,ss(#s));jk(&f,dl((V*)s,a));
-	_(kabs, 1)
-	_(kaccum, 1)
-	_(kacos, 1)
-	_(kasin, 1)
-	_(katan, 1)
-	_(kcos, 1)
-	_(kexp, 1)
-	_(klog, 1)
-	_(klog10, 1)
-	_(klog2, 1)
-	_(kmax, 1)
-	_(kmean, 1)
-	_(kmedian, 1)
-	_(kmin, 1)
-	_(kproduct, 1)
-	_(ksin, 1)
-	_(kdesc, 1)
-	_(kasc, 1)
-	_(ksqrt, 1)
-	_(kdev, 1)
-	_(ksum,1)
-	_(ktan, 1)
-	_(ksolve, 2)
-	_(kmmu,2)
 	af_info(); // Initializes and prints info
-	R xD(n,f);
+	P(!s || !f, krr("empty"));
+	R xD(r1(s),r1(f));
 }
