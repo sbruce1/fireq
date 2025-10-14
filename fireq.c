@@ -43,6 +43,7 @@ K array_to_K(af_array a){
 }
 
 // 2D Matrix
+
 af_array K_to_matrix(K x){
 	af_array r = 0;
 	P(xt!=0,r);
@@ -90,18 +91,6 @@ K matrix_to_K(af_array a){
 }
 
 // Functions
-#define F1(NAME, ...) \
-K1(k##NAME){\
-    af_array a = K_to_array(x); \
-    P(!a, krr("type")); \
-    af_array s = 0; \
-    af_##NAME(&s, a __VA_OPT__(, __VA_ARGS__)); \
-    K r = array_to_K(s); \
-    af_release_array(a); \
-    af_release_array(s); \
-    R r;\
-};
-
 #define F1R(NAME, NAME2, ...) \
 K1(NAME2){\
     af_array a = K_to_array(x); \
@@ -113,6 +102,8 @@ K1(NAME2){\
     af_release_array(s); \
     R r;\
 };
+
+#define F1(NAME, ...) F1R(NAME, k##NAME __VA_OPT__(, __VA_ARGS__))
 
 F1(abs)
 F1(accum, 0)
