@@ -131,10 +131,8 @@ __attribute__((constructor)) Z V r_##NAME2(V){ reg(#NAME2, (V*)NAME2, 1);}
 K2(NAME2){\
 	af_array a = K_to_matrix(x);\
 	P(!a, krr("type"));\
-	af_print_array(a);\
 	af_array b = K_to_matrix(y);\
 	P(!b, krr("type"));\
-	af_print_array(b);\
 	af_array c = 0;\
 	af_err err = af_##NAME(&c, a, b __VA_OPT__(, __VA_ARGS__));\
 	P(err, krr("af error"));\
@@ -169,6 +167,29 @@ M1R(inverse, kinv, AF_MAT_NONE)
 // solveLu
 // F1R(sort_index, xdesc, 0, 0) // later 
 // F1R(sort_index, xdesc, 0, 0)
+	//
+	//
+// Special Implementations
+// lsq
+K2(klsq){
+	af_array a = K_to_matrix(x);
+	P(!a, krr("type"));
+	af_array b = K_to_matrix(y);
+	P(!b, krr("type"));
+	af_array binv = 0;
+	af_array c = 0;
+	af_err err = af_inverse(&binv, b, AF_MAT_NONE);
+	P(err, krr("af inverse error"));
+	err = af_matmul(&c, a, binv, AF_MAT_NONE, AF_MAT_NONE);
+	P(err, krr("af matmul error"));
+	K r = matrix_to_K(c);
+	af_release_array(a);
+	af_release_array(b);
+	af_release_array(binv);
+	af_release_array(c);
+	R r;
+}
+__attribute__((constructor)) Z V r_klsq(V){ reg("klsq", (V*)klsq, 2);}
 
 
 K init() {

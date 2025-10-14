@@ -17,3 +17,9 @@ b:1000 1000#"f"$til 1000000;
 \ts .af.inv a;
 
 -1 "\n";
+
+0N!"LSQ Speed Test";
+0N!"Q";
+\ts b lsq a;
+0N!"AF";
+\ts .af.lsq[b;a];
