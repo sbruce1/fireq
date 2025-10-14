@@ -95,7 +95,7 @@ ZK f=NULL;
 
 V reg(S n, V* fn, I a){if(!s){s=ktn(KS, 0);}if(!f){f=ktn(0, 0);}js(&s, ss(n));jk(&f, dl(fn,a));}
 
-// Functions
+// Function
 #define F1R(NAME, NAME2, ...) \
 K1(NAME2){\
     af_array a = K_to_array(x); \
@@ -110,6 +110,47 @@ K1(NAME2){\
 __attribute__((constructor)) Z V r_##NAME2(V){ reg(#NAME2, (V*)NAME2, 1);}
 
 #define F1(NAME, ...) F1R(NAME, k##NAME __VA_OPT__(, __VA_ARGS__))
+
+//TODO: just check what the actual type is so a hard cast isn't required
+#define F1R2(NAME, NAME2, ...) \
+K1(NAME2){\
+    af_array a = K_to_array(x); \
+    P(!a, krr("type")); \
+    af_array s1 = 0; \
+    af_array s2 = 0; \
+    af_array s3 = 0;\
+    af_##NAME(&s1, &s2, a __VA_OPT__(, __VA_ARGS__)); \
+    af_cast(&s3, s2, s64);\
+    K rx = array_to_K(s3); \
+    K ry = array_to_K(s1); \
+    af_release_array(a); \
+    af_release_array(s1); \
+    af_release_array(s2); \
+    af_release_array(s3); \
+    R knk(2, rx, ry);\
+} \
+__attribute__((constructor)) Z V r_##NAME2(V){ reg(#NAME2, (V*)NAME2, 1);}
+
+
+#define F12(NAME, ...) F1R2(NAME, k##NAME __VA_OPT__(, __VA_ARGS__))
+
+#define F2R(NAME, NAME2, ...) \
+K2(NAME2){\
+    af_array a = K_to_array(x); \
+    P(!a, krr("type")); \
+    af_array b = K_to_array(y); \
+    P(!b, krr("type")); \
+    af_array s = 0; \
+    af_##NAME(&s, a, b __VA_OPT__(, __VA_ARGS__)); \
+    K r = array_to_K(s); \
+    af_release_array(a); \
+    af_release_array(b); \
+    af_release_array(s); \
+    R r;\
+} \
+__attribute__((constructor)) Z V r_##NAME2(V){ reg(#NAME2, (V*)NAME2, 2);}
+
+#define F2(NAME, ...) F2R(NAME, k##NAME __VA_OPT__(, __VA_ARGS__))
 
 #define M1R(NAME, NAME2, ...) \
 K1(NAME2){\
@@ -149,26 +190,19 @@ __attribute__((constructor)) Z V r_##NAME2(V){ reg(#NAME2, (V*)NAME2, 2);}
 
 F1(abs)F1(accum, 0)F1(acos)F1(asin)F1(atan)F1(cos)F1(exp)F1(log)F1(log10)F1(log2)F1(max, 0)F1(mean, 0)F1(median, 0)F1(min, 0)
 F1(product,0)F1(sin)F1R(sort, kdesc, 0, 0);F1R(sort, kasc, 0, 1);F1(sqrt)F1R(stdev_v2, kdev, 0, 0)F1(sum, 0)F1(tan)
+F2R(cov_v2, kcov, 0)
 M2(solve, AF_MAT_NONE)
 M2R(matmul, kmmu, AF_MAT_NONE, AF_MAT_NONE)
 M1R(inverse, kinv, AF_MAT_NONE)
 // approx1
 // approx2
-// cov
-// lu
-// mod
+F2(mod, 0)
 // nearestNeighbour
-// pow
-// pow2
-// setintersect
-// setunion
-// solve
+F2(pow, 0)
+F1(pow2)
 
-// solveLu
-// F1R(sort_index, xdesc, 0, 0) // later 
-// F1R(sort_index, xdesc, 0, 0)
-	//
-	//
+F1R2(sort_index, kidesc, 0, 0)
+F1R2(sort_index, kiasc, 0, 1)
 // Special Implementations
 // lsq
 K2(klsq){
