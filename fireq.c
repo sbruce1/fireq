@@ -61,9 +61,11 @@ af_array K_to_matrix(K x){
 		default:
 			R r;
 	}
-	af_create_array(&r, data, 2, dims, t);
+	af_err err = af_create_array(&r, data, 2, dims, t);
+	P(err, (af_array)0);
 	af_array r2 = 0;
-	af_transpose(&r2, r, false);
+	af_err err2 = af_transpose(&r2, r, false);
+	P(err2, (af_array)0);
 	af_release_array(r);
 	R r2;
 }
@@ -75,7 +77,8 @@ K matrix_to_K(af_array a){
 	af_get_dims(&d0, &d1, &d2, &d3, a);
 	J kt;
 	af_array b = 0;
-	af_transpose(&b, a, false);
+	af_err err = af_transpose(&b, a, false);
+	P(err, (K)0);
 	V *data = NULL;
 	K y;
 	switch (t) {
@@ -86,7 +89,8 @@ K matrix_to_K(af_array a){
 		default: 
 			R (K)0;
 	}	
-	af_get_data_ptr(data, b);
+	af_err err2 = af_get_data_ptr(data, b);
+	P(err2, (K)0);
 	K r = k(0, "{x cut y}", kj(d1), r1(y), (K)0);
 	R r;
 }
