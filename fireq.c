@@ -17,7 +17,8 @@ af_array K_to_array(K x){
 		default:
 			R r;
 	}
-	af_create_array(&r, data, 1, dims, t);
+	af_err err = af_create_array(&r, data, 1, dims, t);
+	P(err, (af_array)0);
 	R r;
 }
 
@@ -37,7 +38,8 @@ K array_to_K(af_array a){
 		default: 
 			R (K)0;
 	}	
-	af_get_data_ptr(data, a);
+	af_err err = af_get_data_ptr(data, a);
+	P(err, (K)0);
 	R r;
 }
 
@@ -103,6 +105,7 @@ K1(NAME2){\
     af_array s = 0; \
     af_##NAME(&s, a __VA_OPT__(, __VA_ARGS__)); \
     K r = array_to_K(s); \
+    P(!r, krr("af err")); \
     af_release_array(a); \
     af_release_array(s); \
     R r;\
@@ -122,7 +125,9 @@ K1(NAME2){\
     af_##NAME(&s1, &s2, a __VA_OPT__(, __VA_ARGS__)); \
     af_cast(&s3, s2, s64);\
     K rx = array_to_K(s3); \
+    P(!rx, krr("af err")); \
     K ry = array_to_K(s1); \
+    P(!ry, krr("af err")); \
     af_release_array(a); \
     af_release_array(s1); \
     af_release_array(s2); \
@@ -196,10 +201,7 @@ M2R(matmul, kmmu, AF_MAT_NONE, AF_MAT_NONE)
 M1R(inverse, kinv, AF_MAT_NONE)
 // approx1
 // approx2
-F2(mod, 0)
-// nearestNeighbour
-F2(pow, 0)
-F1(pow2)
+F2(mod, 0)F2(pow, 0)F1(pow2)
 
 F1R2(sort_index, kidesc, 0, 0)
 F1R2(sort_index, kiasc, 0, 1)
