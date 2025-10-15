@@ -23,6 +23,7 @@ af_array K_to_array(K x){
 }
 
 K array_to_K(af_array a){
+	P(!a, (K)0);
 	af_dtype t;
 	af_get_type(&t, a);
 	dim_t d0, d1, d2, d3;
@@ -65,7 +66,7 @@ af_array K_to_matrix(K x){
 	P(err, (af_array)0);
 	af_array r2 = 0;
 	af_err err2 = af_transpose(&r2, r, false);
-	P(err2, (af_array)0);
+	P(err2, (af_release_array(r2),(af_array)0));
 	af_release_array(r);
 	R r2;
 }
@@ -90,7 +91,7 @@ K matrix_to_K(af_array a){
 			R (K)0;
 	}	
 	af_err err2 = af_get_data_ptr(data, b);
-	P(err2, (K)0);
+	P(err2, (af_release_array(b),(K)0));
 	K r = k(0, "{x cut y}", kj(d1), r1(y), (K)0);
 	R r;
 }
@@ -127,11 +128,12 @@ K1(NAME2){\
     af_array s2 = 0; \
     af_array s3 = 0;\
     af_##NAME(&s1, &s2, a __VA_OPT__(, __VA_ARGS__)); \
+    P((!s1 || !s2), (af_release_array(a),krr("af err"))); \
     af_cast(&s3, s2, s64);\
     K rx = array_to_K(s3); \
-    P(!rx, krr("af err")); \
+    P(!rx, (af_release_array(a), af_release_array(s1), af_release_array(s2), krr("af err"))); \
     K ry = array_to_K(s1); \
-    P(!ry, krr("af err")); \
+    P(!ry, (af_release_array(a), af_release_array(s1), af_release_array(s2), r0(rx), krr("af err"))); \
     af_release_array(a); \
     af_release_array(s1); \
     af_release_array(s2); \
