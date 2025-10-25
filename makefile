@@ -1,8 +1,8 @@
 CC = gcc
 CFLAGS = -shared -fPIC -DKXVER=3 -I$(AF_PATH)/include
 LDFLAGS = -L$(AF_PATH)/lib64 -lm -laf
-SRCS = fireq.c
-OUT = fireq.so
+SRCS = f.c
+OUT = f.so
 
 all: $(OUT)
 
